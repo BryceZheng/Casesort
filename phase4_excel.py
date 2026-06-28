@@ -17,6 +17,7 @@ import argparse
 import json
 import os
 import sys
+import tempfile
 
 try:
     import openpyxl
@@ -180,7 +181,7 @@ def main():
     parser.add_argument("--fields", metavar="JSON", help="格式B的额外字段列表（JSON数组）")
     parser.add_argument("--append", metavar="JSON", help="追加一批案例数据（JSON 字符串）")
     parser.add_argument("--merge", metavar="OUTPUT", help="合并所有批次，输出最终 Excel")
-    parser.add_argument("--tmp", default="/tmp/casesort_phase4_tmp.json", help="临时存储文件路径")
+    parser.add_argument("--tmp", default=os.path.join(tempfile.gettempdir(), "casesort_phase4_tmp.json"), help="临时存储文件路径")
     args = parser.parse_args()
 
     if args.append:

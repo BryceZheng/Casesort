@@ -28,7 +28,9 @@
 |------|---------|
 | macOS | ✅ 完整支持 |
 | Linux | ✅ 完整支持 |
-| Windows | ⚠️ 需安装 [WSL](https://learn.microsoft.com/zh-cn/windows/wsl/install)（Windows Subsystem for Linux），安装后按 Linux 步骤操作 |
+| Windows | ✅ 支持（第二阶段建议选**方式C**，pdftotext/Tesseract 需 [WSL](https://learn.microsoft.com/zh-cn/windows/wsl/install)） |
+
+> **Windows 用户**：第二阶段选择**方式C（PaddleOCR）** 即可全程无需安装 WSL。方式A/B（pdftotext/Tesseract）才需要 WSL，属于进阶用法。
 
 ### 前置要求
 
@@ -182,7 +184,7 @@ Casesort/
 
 ## 注意事项
 
-1. **安装路径**：脚本通过 `find` 动态定位，安装到任意目录均可，无需固定路径
+1. **安装路径**：脚本通过 Python `os.walk` 动态定位，安装到任意目录均可，跨平台（macOS/Linux/Windows）
 2. **第二阶段方式C（PaddleOCR）**：需要用户自备 PaddleOCR API Token，未申请时请选择方式A（pdftotext）或方式B（Tesseract）
 3. **第五阶段 Word 报告**：由内置的 `phase5_report.py` 生成，无需额外依赖
 4. **PaddleOCR API Key**：如使用 PaddleOCR 方式，需在调用命令中传入自己的 API Token，请勿将 Token 写入代码后上传到公开仓库

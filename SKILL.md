@@ -210,9 +210,16 @@ python3 "$CASESORT_SCRIPT" \
 
 检查是否存在上次未完成的临时文件：
 ```bash
-[ -f "/tmp/casesort_phase3_tmp.json" ] && echo "⚠️ 发现上次的临时文件，是否清除后重新开始？" || echo "✅ 无残留临时文件"
+python3 -c "
+import os, tempfile
+f = os.path.join(tempfile.gettempdir(), 'casesort_phase3_tmp.json')
+print('⚠️ 发现上次的临时文件，是否清除后重新开始？' if os.path.exists(f) else '✅ 无残留临时文件')
+"
 ```
-若用户确认重新开始，执行 `rm /tmp/casesort_phase3_tmp.json` 后继续。
+若用户确认重新开始，执行后继续：
+```bash
+python3 -c "import os, tempfile; f=os.path.join(tempfile.gettempdir(),'casesort_phase3_tmp.json'); os.path.exists(f) and os.remove(f)"
+```
 
 **步骤 2：预分析（读取前 30 个文件）**
 
@@ -254,7 +261,9 @@ python3 "$CASESORT_SCRIPT" \
 3 轮结束后，整理本批次结果（JSON 格式），**必须先将 JSON 写入临时文件，再通过 `$(cat file)` 传入脚本**（直接嵌入 shell 字符串会因法律文书中的引号导致 JSON 解析错误）：
 
 ```bash
-# 第一步：将 JSON 写入临时文件（如 /tmp/casesort_phase3_batchN.json）
+# 第一步：将 JSON 写入临时文件
+BATCH_FILE=$(python3 -c "import tempfile,os; print(os.path.join(tempfile.gettempdir(),'casesort_phase3_batchN.json'))")
+# （将 JSON 内容写入 $BATCH_FILE）
 
 # 第二步：定位脚本并调用
 CASESORT_SCRIPT=$(python3 -c "
@@ -263,9 +272,10 @@ for r,d,f in os.walk(h):
     if len(pathlib.Path(r).relative_to(h).parts)>=8: d.clear()
     if 'phase3_excel.py' in f: print(os.path.join(r,'phase3_excel.py')); break
 ")
+TMP3=$(python3 -c "import tempfile,os; print(os.path.join(tempfile.gettempdir(),'casesort_phase3_tmp.json'))")
 python3 "$CASESORT_SCRIPT" \
-  --append "$(cat /path/to/phase3_batchN.json)" \
-  --tmp "/tmp/casesort_phase3_tmp.json"
+  --append "$(cat "$BATCH_FILE")" \
+  --tmp "$TMP3"
 ```
 
 > ⚠️ **禁止**在 `--append` 后直接写 JSON 字符串，法律文书中的中文引号（如"以...名义"）会破坏 JSON 格式，导致 `JSONDecodeError`。
@@ -302,9 +312,10 @@ for r,d,f in os.walk(h):
     if len(pathlib.Path(r).relative_to(h).parts)>=8: d.clear()
     if 'phase3_excel.py' in f: print(os.path.join(r,'phase3_excel.py')); break
 ")
+TMP3=$(python3 -c "import tempfile,os; print(os.path.join(tempfile.gettempdir(),'casesort_phase3_tmp.json'))")
 python3 "$CASESORT_SCRIPT" \
   --merge "<Markdown文件夹路径>/../全量核查报告.xlsx" \
-  --tmp "/tmp/casesort_phase3_tmp.json"
+  --tmp "$TMP3"
 ```
 
 输出 Excel 格式：
@@ -354,9 +365,16 @@ mkdir -p "<MD文件夹>/../全量核查筛选案例/疑似案例"
 
 检查是否存在上次未完成的临时文件：
 ```bash
-[ -f "/tmp/casesort_phase4_tmp.json" ] && echo "⚠️ 发现上次的临时文件，是否清除后重新开始？" || echo "✅ 无残留临时文件"
+python3 -c "
+import os, tempfile
+f = os.path.join(tempfile.gettempdir(), 'casesort_phase4_tmp.json')
+print('⚠️ 发现上次的临时文件，是否清除后重新开始？' if os.path.exists(f) else '✅ 无残留临时文件')
+"
 ```
-若用户确认重新开始，执行 `rm /tmp/casesort_phase4_tmp.json` 后继续。
+若用户确认重新开始，执行后继续：
+```bash
+python3 -c "import os, tempfile; f=os.path.join(tempfile.gettempdir(),'casesort_phase4_tmp.json'); os.path.exists(f) and os.remove(f)"
+```
 
 **步骤 2：选择输出格式**
 
@@ -432,7 +450,9 @@ mkdir -p "<MD文件夹>/../全量核查筛选案例/疑似案例"
 2 轮结束后，**必须先将 JSON 写入临时文件，再通过 `$(cat file)` 传入脚本**（同第三阶段，直接嵌入会因引号导致解析错误）：
 
 ```bash
-# 第一步：将 JSON 写入临时文件（如 /tmp/casesort_phase4_batchN.json）
+# 第一步：将 JSON 写入临时文件
+BATCH_FILE=$(python3 -c "import tempfile,os; print(os.path.join(tempfile.gettempdir(),'casesort_phase4_batchN.json'))")
+# （将 JSON 内容写入 $BATCH_FILE）
 
 # 第二步：定位脚本并调用
 CASESORT_SCRIPT=$(python3 -c "
@@ -441,10 +461,11 @@ for r,d,f in os.walk(h):
     if len(pathlib.Path(r).relative_to(h).parts)>=8: d.clear()
     if 'phase4_excel.py' in f: print(os.path.join(r,'phase4_excel.py')); break
 ")
+TMP4=$(python3 -c "import tempfile,os; print(os.path.join(tempfile.gettempdir(),'casesort_phase4_tmp.json'))")
 python3 "$CASESORT_SCRIPT" \
   --format A \
-  --append "$(cat /path/to/phase4_batchN.json)" \
-  --tmp "/tmp/casesort_phase4_tmp.json"
+  --append "$(cat "$BATCH_FILE")" \
+  --tmp "$TMP4"
 ```
 
 > ⚠️ **禁止**在 `--append` 后直接写 JSON 字符串，原因同第三阶段。
@@ -472,9 +493,10 @@ for r,d,f in os.walk(h):
     if len(pathlib.Path(r).relative_to(h).parts)>=8: d.clear()
     if 'phase4_excel.py' in f: print(os.path.join(r,'phase4_excel.py')); break
 ")
+TMP4=$(python3 -c "import tempfile,os; print(os.path.join(tempfile.gettempdir(),'casesort_phase4_tmp.json'))")
 python3 "$CASESORT_SCRIPT" \
   --merge "<确认纳入案例路径>/../案例库_最终版.xlsx" \
-  --tmp "/tmp/casesort_phase4_tmp.json"
+  --tmp "$TMP4"
 ```
 
 **步骤 5：MD 文件重命名**
@@ -577,7 +599,9 @@ python3 "$CASESORT_SCRIPT" \
 构建完成后，将 JSON 写入临时文件，再调用脚本生成 Word：
 
 ```bash
-# 第一步：将报告 JSON 写入临时文件（如 /tmp/casesort_phase5_report.json）
+# 第一步：将报告 JSON 写入临时文件
+TMP5=$(python3 -c "import tempfile,os; print(os.path.join(tempfile.gettempdir(),'casesort_phase5_report.json'))")
+# （将 JSON 内容写入 $TMP5）
 
 # 第二步：定位脚本并生成 Word
 CASESORT_SCRIPT=$(python3 -c "
@@ -587,7 +611,7 @@ for r,d,f in os.walk(h):
     if 'phase5_report.py' in f: print(os.path.join(r,'phase5_report.py')); break
 ")
 python3 "$CASESORT_SCRIPT" \
-  --input "/tmp/casesort_phase5_report.json" \
+  --input "$TMP5" \
   --output "<案例库Excel同级目录>/案例分析报告.docx"
 ```
 
