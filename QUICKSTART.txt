@@ -1,29 +1,39 @@
 【Casesort Skill 快速开始指南】v3.0
 
-📍 安装位置：~/.claude/skills/Casesort/
-
 ===========================================
-安装步骤
+安装步骤（按你使用的 Agent 选择）
 ===========================================
 
-1. 将本文件夹复制到 Claude Code 的 skills 目录：
+Claude Code：
    cp -r Casesort ~/.claude/skills/
+   重启 Claude Code
 
-2. 安装 Python 依赖：
-   pip install openpyxl python-docx requests
+Codex CLI：
+   cp -r Casesort ~/.agents/skills/
+   重启 Codex
 
-3. 重启 Claude Code
+WorkBuddy：
+   将 Casesort 文件夹复制到 WorkBuddy 的 skills 目录，重启后在 Skill 列表选择
+
+其他 Agent：
+   将整个 Casesort 文件夹放入对应平台的 skills 目录；
+   或将 SKILL.md 内容粘贴为 System Prompt
+
+安装 Python 依赖（所有平台都需要）：
+   pip install openpyxl python-docx requests pdfplumber
 
 ===========================================
 使用方法
 ===========================================
 
-在 Claude Code 对话框中输入以下任意触发词：
+输入以下任意触发词启动：
 
    整理案例 / 筛选案例 / 案例库 / 检索关键词
    全量核查 / 案例分析 / Casesort
 
-Claude 会询问从哪个阶段开始，然后逐步引导。
+AI 会询问从哪个阶段开始，然后逐步引导。
+注意：部分 Agent（如 WorkBuddy）可能需要手动在 Skill 列表中选择，
+触发词可能不生效。
 
 ===========================================
 五个阶段概览
@@ -40,10 +50,12 @@ Claude 会询问从哪个阶段开始，然后逐步引导。
 第三阶段：AI 全量核查
   - 输入：Markdown 文件夹
   - 输出：3色 Excel（蓝=纳入/橙=疑似/红=排除）+ 分类文件夹
+  ⚠️ 中途中断后重新开始，请告知 AI 清除上次的临时文件再重跑
 
 第四阶段：结构化字段提取
   - 输入：确认纳入案例文件夹
   - 输出：案例库 Excel（格式A：商业贿赂17字段 / 格式B：通用字段）
+  ⚠️ 同上，重新开始前请清除临时文件
 
 第五阶段：法律分析报告
   - 输入：案例库 Excel
@@ -56,27 +68,30 @@ PDF 识别方式选择
 pdftotext（推荐优先尝试）
   - 速度：秒级
   - 要求：PDF 必须有文字层（非扫描件）
-  - 安装：brew install poppler
+  - macOS：brew install poppler
+  - Linux：sudo apt-get install poppler-utils
 
 Tesseract（本地 OCR）
   - 速度：分钟级
   - 适合：扫描件
-  - 安装：brew install tesseract tesseract-lang poppler
+  - macOS：brew install tesseract tesseract-lang poppler
+  - Linux：sudo apt-get install tesseract-ocr tesseract-ocr-chi-sim poppler-utils
 
 PaddleOCR（云端 API）
   - 速度：5-30秒/文件
   - 适合：复杂版式、表格型 PDF
-  - 要求：需要 API Token（自行申请后使用）
+  - 要求：需要 API Token，前往 https://aistudio.baidu.com/paddleocr 申请
 
 ===========================================
 旧版脚本（向后兼容）
 ===========================================
 
-以下旧版脚本保留，商业贿赂 docx 处理流程仍可使用：
+以下旧版脚本保留，商业贿赂 docx 处理流程仍可使用。
+脚本路径以实际安装位置为准：
 
-  python3 ~/.claude/skills/Casesort/run.py             # 交互式启动
-  python3 ~/.claude/skills/Casesort/extract_cases.py   # 直接提取
-  python3 ~/.claude/skills/Casesort/deep_verify.py     # 深度核验
-  python3 ~/.claude/skills/Casesort/verify_cases.py    # 三层核查
+  python3 <安装路径>/Casesort/run.py             # 交互式启动
+  python3 <安装路径>/Casesort/extract_cases.py   # 直接提取
+  python3 <安装路径>/Casesort/deep_verify.py     # 深度核验
+  python3 <安装路径>/Casesort/verify_cases.py    # 三层核查
 
 详细说明请查看：README.md
