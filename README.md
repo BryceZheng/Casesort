@@ -153,9 +153,12 @@ Casesort/
 
 ## 注意事项
 
-1. **PaddleOCR API Key**：如使用 PaddleOCR 方式，需在调用命令中传入自己的 API Token，请勿将 Token 写入代码后上传到公开仓库
-2. **文件格式**：第四阶段旧版脚本仅支持 `.docx` 格式；第三/四阶段新流程基于 Markdown 文件
-3. **Excel 输出**：需要 `openpyxl` 库，生成的 `.xlsx` 文件不建议上传到版本控制
+1. **安装路径**：脚本通过 `find` 动态定位，安装到任意目录均可，无需固定路径
+2. **第二阶段方式C（PaddleOCR）**：需要用户自备 PaddleOCR API Token，未申请时请选择方式A（pdftotext）或方式B（Tesseract）
+3. **第五阶段 Word 报告**：由内置的 `phase5_report.py` 生成，无需额外依赖
+4. **PaddleOCR API Key**：如使用 PaddleOCR 方式，需在调用命令中传入自己的 API Token，请勿将 Token 写入代码后上传到公开仓库
+5. **文件格式**：第四阶段旧版脚本仅支持 `.docx` 格式；第三/四阶段新流程基于 Markdown 文件
+6. **Excel 输出**：需要 `openpyxl` 库，生成的 `.xlsx` 文件不建议上传到版本控制
 
 ## 许可证
 
