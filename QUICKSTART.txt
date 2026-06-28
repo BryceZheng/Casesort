@@ -1,0 +1,82 @@
+【Casesort Skill 快速开始指南】v3.0
+
+📍 安装位置：~/.claude/skills/Casesort/
+
+===========================================
+安装步骤
+===========================================
+
+1. 将本文件夹复制到 Claude Code 的 skills 目录：
+   cp -r Casesort ~/.claude/skills/
+
+2. 安装 Python 依赖：
+   pip install openpyxl python-docx requests
+
+3. 重启 Claude Code
+
+===========================================
+使用方法
+===========================================
+
+在 Claude Code 对话框中输入以下任意触发词：
+
+   整理案例 / 筛选案例 / 案例库 / 检索关键词
+   全量核查 / 案例分析 / Casesort
+
+Claude 会询问从哪个阶段开始，然后逐步引导。
+
+===========================================
+五个阶段概览
+===========================================
+
+第一阶段：检索关键词生成
+  - 输入：描述你想整理的案例类型
+  - 输出：AND/OR/NOT 结构化检索式（直接复制到威科先行等数据库）
+
+第二阶段：PDF 批量识别
+  - 输入：PDF 文件夹路径
+  - 输出：Markdown 文件夹（支持 pdftotext / Tesseract / PaddleOCR）
+
+第三阶段：AI 全量核查
+  - 输入：Markdown 文件夹
+  - 输出：3色 Excel（蓝=纳入/橙=疑似/红=排除）+ 分类文件夹
+
+第四阶段：结构化字段提取
+  - 输入：确认纳入案例文件夹
+  - 输出：案例库 Excel（格式A：商业贿赂17字段 / 格式B：通用字段）
+
+第五阶段：法律分析报告
+  - 输入：案例库 Excel
+  - 输出：Word 分析报告（数据概览 + 分类分析 + 合规建议）
+
+===========================================
+PDF 识别方式选择
+===========================================
+
+pdftotext（推荐优先尝试）
+  - 速度：秒级
+  - 要求：PDF 必须有文字层（非扫描件）
+  - 安装：brew install poppler
+
+Tesseract（本地 OCR）
+  - 速度：分钟级
+  - 适合：扫描件
+  - 安装：brew install tesseract tesseract-lang poppler
+
+PaddleOCR（云端 API）
+  - 速度：5-30秒/文件
+  - 适合：复杂版式、表格型 PDF
+  - 要求：需要 API Token（自行申请后使用）
+
+===========================================
+旧版脚本（向后兼容）
+===========================================
+
+以下旧版脚本保留，商业贿赂 docx 处理流程仍可使用：
+
+  python3 ~/.claude/skills/Casesort/run.py             # 交互式启动
+  python3 ~/.claude/skills/Casesort/extract_cases.py   # 直接提取
+  python3 ~/.claude/skills/Casesort/deep_verify.py     # 深度核验
+  python3 ~/.claude/skills/Casesort/verify_cases.py    # 三层核查
+
+详细说明请查看：README.md
