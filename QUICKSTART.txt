@@ -19,6 +19,13 @@ WorkBuddy：
    将整个 Casesort 文件夹放入对应平台的 skills 目录；
    或将 SKILL.md 内容粘贴为 System Prompt
 
+---
+Windows 用户注意事项：
+   1. cp -r 命令在 CMD 中无效，可直接用文件管理器将 Casesort 文件夹
+      粘贴到对应目录（如 C:\Users\你的用户名\.claude\skills\）
+   2. 若提示 "python3 is not recognized"，请将命令中的 python3 替换为 python
+   3. 第二阶段建议选择 PaddleOCR（方式C），无需安装 WSL
+
 安装 Python 依赖（所有平台都需要）：
    pip install openpyxl python-docx requests pdfplumber
 

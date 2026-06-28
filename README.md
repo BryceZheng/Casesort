@@ -30,7 +30,10 @@
 | Linux | ✅ 完整支持 |
 | Windows | ✅ 支持（第二阶段建议选**方式C**，pdftotext/Tesseract 需 [WSL](https://learn.microsoft.com/zh-cn/windows/wsl/install)） |
 
-> **Windows 用户**：第二阶段选择**方式C（PaddleOCR）** 即可全程无需安装 WSL。方式A/B（pdftotext/Tesseract）才需要 WSL，属于进阶用法。
+> **Windows 用户**：
+> - 第二阶段选择**方式C（PaddleOCR）** 即可全程无需安装 WSL；方式A/B 才需要 WSL
+> - 安装 Skill 时，`cp -r` 命令在 CMD 中不可用，可直接用**文件管理器**将文件夹粘贴到对应目录（如 `C:\Users\你的用户名\.claude\skills\`）
+> - 若运行时提示 `python3 is not recognized`，请将命令中的 `python3` 替换为 `python`
 
 ### 前置要求
 
