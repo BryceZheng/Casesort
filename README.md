@@ -33,15 +33,25 @@ pip install openpyxl python-docx requests pdfplumber
 
 - PDF 转换依赖（根据使用的 OCR 方式选一种）：
 
+**macOS：**
 ```bash
-# 方式A：pdftotext（适合含文字层的PDF，最快）
+# 方式A：pdftotext
 brew install poppler
 
-# 方式B：Tesseract（适合扫描件，本地运行）
+# 方式B：Tesseract
 brew install tesseract tesseract-lang
-
-# 方式C：PaddleOCR（云端API，精度最高，需配置API Key）
 ```
+
+**Linux（Ubuntu/Debian）：**
+```bash
+# 方式A：pdftotext
+sudo apt-get install poppler-utils
+
+# 方式B：Tesseract
+sudo apt-get install tesseract-ocr tesseract-ocr-chi-sim poppler-utils
+```
+
+方式C（PaddleOCR）无需本地安装，但需要 [AI Studio](https://aistudio.baidu.com/) API Token。
 
 ### 方式一：作为 AI Agent 的指令文件（推荐）
 
@@ -122,6 +132,8 @@ Casesort/
 ├── QUICKSTART.txt        # 快速上手指引
 ├── phase3_excel.py       # 第三阶段：全量核查 Excel 生成
 ├── phase4_excel.py       # 第四阶段：成果产出 Excel 生成
+├── phase5_report.py      # 第五阶段：法律分析报告 Word 生成
+├── paddle_ocr.py         # 第二阶段方式C：PaddleOCR 批量识别
 ├── extract_bribery_cases.py  # 旧版：商业贿赂 PDF 提取
 ├── extract_cases.py          # 旧版：docx 提取
 ├── deep_verify.py            # 旧版：深度核验（构成要件分析）

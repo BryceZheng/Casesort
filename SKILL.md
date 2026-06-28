@@ -168,39 +168,16 @@ echo "完成"
 **方式 C：PaddleOCR**
 
 > 选择此方式前，先询问用户：
-> "请提供您的 PaddleOCR API Token。如尚未申请，可前往 PaddleOCR 官网自行获取。"
+> "请提供您的 PaddleOCR API Token。如尚未申请，可前往 [AI Studio](https://aistudio.baidu.com/) 注册并申请 PaddleOCR 服务 Token。"
 
-收到 Token 后执行：
+收到 Token 后，定位脚本并执行：
 
 ```bash
-python3 - << 'PYEOF'
-import os, sys, json, requests
-from pathlib import Path
-
-input_dir  = "<用户提供的PDF路径>"
-output_dir = input_dir + "/Markdown_转换结果"
-token      = "<用户提供的TOKEN>"
-
-os.makedirs(output_dir, exist_ok=True)
-pdfs = sorted(Path(input_dir).glob("*.pdf"))
-print(f"共发现 {len(pdfs)} 个 PDF")
-
-for pdf in pdfs:
-    name = pdf.stem
-    resp = requests.post(
-        "https://api.paddlepaddle.org/paddlehub/v1/module/run",
-        headers={"Authorization": f"Token {token}"},
-        files={"image": open(pdf, "rb")},
-        timeout=60
-    )
-    if resp.ok:
-        text = "\n".join(item.get("text","") for item in resp.json().get("results", []))
-        out = Path(output_dir) / f"{name}.md"
-        out.write_text(f"# {name}\n\n{text}", encoding="utf-8")
-        print(f"✅ {name}")
-    else:
-        print(f"❌ {name}：{resp.status_code}")
-PYEOF
+CASESORT_SCRIPT=$(find ~ -maxdepth 8 -type f -name "paddle_ocr.py" -path "*/Casesort*" 2>/dev/null | head -1)
+python3 "$CASESORT_SCRIPT" \
+  "<用户提供的PDF路径>" \
+  "<用户提供的PDF路径>/Markdown_转换结果" \
+  --token "<用户提供的TOKEN>"
 ```
 
 **步骤 6：报告结果**
