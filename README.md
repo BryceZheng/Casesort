@@ -74,7 +74,13 @@ cp -r Casesort ~/.claude/skills/
 **WorkBuddy：**
 将整个 `Casesort` 文件夹复制到 WorkBuddy 的 `skills/` 目录下，重启后在 Skill 列表中找到 `Casesort` 并选择即可调用。WorkBuddy 可能不支持自然语言触发词，需手动选择 Skill 名称启动。
 
-**其他支持 Markdown Skill 的 Agent（Codex 等）：**
+**Codex CLI：**
+```bash
+cp -r Casesort ~/.agents/skills/
+```
+重启后输入触发词即可启动。注意：首次运行时 Codex 会对部分操作弹出审批提示（写入 `/tmp/`、网络请求、`pip install` 等），点击允许即可，后续不再询问。
+
+**其他支持 Markdown Skill 的 Agent：**
 参考各平台文档，将整个文件夹放入对应的 skills 目录；或将 `SKILL.md` 内容作为 System Prompt 直接粘贴。
 
 ### 方式二：直接运行 Python 脚本
