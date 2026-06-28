@@ -22,6 +22,14 @@
 
 ## 安装方法
 
+### 系统兼容性
+
+| 系统 | 支持情况 |
+|------|---------|
+| macOS | ✅ 完整支持 |
+| Linux | ✅ 完整支持 |
+| Windows | ⚠️ 需安装 [WSL](https://learn.microsoft.com/zh-cn/windows/wsl/install)（Windows Subsystem for Linux），安装后按 Linux 步骤操作 |
+
 ### 前置要求
 
 - Python 3.7+

@@ -168,12 +168,17 @@ echo "完成"
 **方式 C：PaddleOCR**
 
 > 选择此方式前，先询问用户：
-> "请提供您的 PaddleOCR API Token。如尚未申请，可前往 [AI Studio](https://aistudio.baidu.com/) 注册并申请 PaddleOCR 服务 Token。"
+> "请提供您的 PaddleOCR API Token。如尚未申请，可前往 https://aistudio.baidu.com/paddleocr 获取。"
 
 收到 Token 后，定位脚本并执行：
 
 ```bash
-CASESORT_SCRIPT=$(find ~ -maxdepth 8 -type f -name "paddle_ocr.py" -path "*/Casesort*" 2>/dev/null | head -1)
+CASESORT_SCRIPT=$(python3 -c "
+import os, pathlib; h = pathlib.Path.home()
+for r,d,f in os.walk(h):
+    if len(pathlib.Path(r).relative_to(h).parts)>=8: d.clear()
+    if 'paddle_ocr.py' in f: print(os.path.join(r,'paddle_ocr.py')); break
+")
 python3 "$CASESORT_SCRIPT" \
   "<用户提供的PDF路径>" \
   "<用户提供的PDF路径>/Markdown_转换结果" \
@@ -246,7 +251,12 @@ python3 "$CASESORT_SCRIPT" \
 # 第一步：将 JSON 写入临时文件（如 /tmp/casesort_phase3_batchN.json）
 
 # 第二步：定位脚本并调用
-CASESORT_SCRIPT=$(find ~ -maxdepth 8 -type f -name "phase3_excel.py" 2>/dev/null | head -1)
+CASESORT_SCRIPT=$(python3 -c "
+import os, pathlib; h = pathlib.Path.home()
+for r,d,f in os.walk(h):
+    if len(pathlib.Path(r).relative_to(h).parts)>=8: d.clear()
+    if 'phase3_excel.py' in f: print(os.path.join(r,'phase3_excel.py')); break
+")
 python3 "$CASESORT_SCRIPT" \
   --append "$(cat /path/to/phase3_batchN.json)" \
   --tmp "/tmp/casesort_phase3_tmp.json"
@@ -280,7 +290,12 @@ JSON 数据结构：
 所有批次完成后，调用合并命令：
 
 ```bash
-CASESORT_SCRIPT=$(find ~ -maxdepth 8 -type f -name "phase3_excel.py" 2>/dev/null | head -1)
+CASESORT_SCRIPT=$(python3 -c "
+import os, pathlib; h = pathlib.Path.home()
+for r,d,f in os.walk(h):
+    if len(pathlib.Path(r).relative_to(h).parts)>=8: d.clear()
+    if 'phase3_excel.py' in f: print(os.path.join(r,'phase3_excel.py')); break
+")
 python3 "$CASESORT_SCRIPT" \
   --merge "<Markdown文件夹路径>/../全量核查报告.xlsx" \
   --tmp "/tmp/casesort_phase3_tmp.json"
@@ -408,7 +423,12 @@ mkdir -p "<MD文件夹>/../全量核查筛选案例/疑似案例"
 # 第一步：将 JSON 写入临时文件（如 /tmp/casesort_phase4_batchN.json）
 
 # 第二步：定位脚本并调用
-CASESORT_SCRIPT=$(find ~ -maxdepth 8 -type f -name "phase4_excel.py" 2>/dev/null | head -1)
+CASESORT_SCRIPT=$(python3 -c "
+import os, pathlib; h = pathlib.Path.home()
+for r,d,f in os.walk(h):
+    if len(pathlib.Path(r).relative_to(h).parts)>=8: d.clear()
+    if 'phase4_excel.py' in f: print(os.path.join(r,'phase4_excel.py')); break
+")
 python3 "$CASESORT_SCRIPT" \
   --format A \
   --append "$(cat /path/to/phase4_batchN.json)" \
@@ -434,7 +454,12 @@ python3 "$CASESORT_SCRIPT" \
 所有批次完成后，调用合并命令：
 
 ```bash
-CASESORT_SCRIPT=$(find ~ -maxdepth 8 -type f -name "phase4_excel.py" 2>/dev/null | head -1)
+CASESORT_SCRIPT=$(python3 -c "
+import os, pathlib; h = pathlib.Path.home()
+for r,d,f in os.walk(h):
+    if len(pathlib.Path(r).relative_to(h).parts)>=8: d.clear()
+    if 'phase4_excel.py' in f: print(os.path.join(r,'phase4_excel.py')); break
+")
 python3 "$CASESORT_SCRIPT" \
   --merge "<确认纳入案例路径>/../案例库_最终版.xlsx" \
   --tmp "/tmp/casesort_phase4_tmp.json"
@@ -543,7 +568,12 @@ python3 "$CASESORT_SCRIPT" \
 # 第一步：将报告 JSON 写入临时文件（如 /tmp/casesort_phase5_report.json）
 
 # 第二步：定位脚本并生成 Word
-CASESORT_SCRIPT=$(find ~ -maxdepth 8 -type f -name "phase5_report.py" 2>/dev/null | head -1)
+CASESORT_SCRIPT=$(python3 -c "
+import os, pathlib; h = pathlib.Path.home()
+for r,d,f in os.walk(h):
+    if len(pathlib.Path(r).relative_to(h).parts)>=8: d.clear()
+    if 'phase5_report.py' in f: print(os.path.join(r,'phase5_report.py')); break
+")
 python3 "$CASESORT_SCRIPT" \
   --input "/tmp/casesort_phase5_report.json" \
   --output "<案例库Excel同级目录>/案例分析报告.docx"
