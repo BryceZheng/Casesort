@@ -65,14 +65,17 @@ sudo apt-get install tesseract-ocr tesseract-ocr-chi-sim poppler-utils
 
 `SKILL.md` 是本工具的核心指令文件，可加载到支持自定义指令的 AI 助手中使用。
 
-**Claude Code（Skills 系统）：**
+**Claude Code：**
 ```bash
 cp -r Casesort ~/.claude/skills/
 ```
-重启后输入触发词即可启动。
+重启后输入触发词（如"整理案例"）即可启动。
 
-**其他 AI Agent / Codex 等：**
-将 `SKILL.md` 的内容作为系统提示词（System Prompt）或自定义指令加载到对应平台，按各平台文档配置即可。
+**WorkBuddy：**
+将整个 `Casesort` 文件夹复制到 WorkBuddy 的 `skills/` 目录下，重启后在 Skill 列表中找到 `Casesort` 并选择即可调用。WorkBuddy 可能不支持自然语言触发词，需手动选择 Skill 名称启动。
+
+**其他支持 Markdown Skill 的 Agent（Codex 等）：**
+参考各平台文档，将整个文件夹放入对应的 skills 目录；或将 `SKILL.md` 内容作为 System Prompt 直接粘贴。
 
 ### 方式二：直接运行 Python 脚本
 
